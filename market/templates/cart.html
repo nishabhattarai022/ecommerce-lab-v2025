@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Your Cart - Wearly
+{% endblock %}
+
+{% block content %}
+<style>
+  .cart-container {
+    max-width: 900px;
+    margin: 60px auto 80px;
+    background: white;
+    border: 2px solid #ceadae;
+    border-radius: 12px;
+    padding: 30px;
+    color: black;
+    font-family: Arial, sans-serif;
+  }
+  .cart-header {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ceadae;
+    padding-bottom: 10px;
+  }
+  .cart-empty {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    padding: 40px 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  thead tr {
+    background-color: #ceadae;
+    color: black;
+  }
+  th, td {
+    padding: 15px 12px;
+    text-align: left;
+    border-bottom: 1px solid #ceadae;
+  }
+  tbody tr:hover {
+    background-color: #f5e8e8;
+  }
+  .product-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1.5px solid #ceadae;
+  }
+  .remove-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  .remove-btn:hover {
+    background-color: #444444;
+  }
+  .checkout-btn {
+    margin-top: 30px;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    float: right;
+    transition: background-color 0.3s ease;
+  }
+  .checkout-btn:hover {
+    background-color: #333333;
+  }
+  .total-row td {
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+</style>
+
+<div class="cart-container">
+    <div class="cart-header">Your Shopping Cart</div>
+
+    {% if cart_items|length == 0 %}
+        <div class="cart-empty">Your cart is currently empty.</div>
+    {% else %}
+        <form method="POST" action="{{ url_for('update_cart') }}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td><img src="{{ url_for('static', filename='images/' + item.product.image_filename) }}" alt="{{ item.product.name }}" class="product-img"></td>
+                        <td>{{ item.product.name }}</td>
+                        <td>${{ "%.2f"|format(item.product.price) }}</td>
+                        <td>
+                            <input type="number" name="quantity_{{ item.product.id }}" min="1" max="99" value="{{ item.quantity }}" style="width: 60px; padding:4px; border:1.5px solid #ceadae; border-radius:6px; text-align:center;">
+                        </td>
+                        <td>${{ "%.2f"|format(item.product.price * item.quantity) }}</td>
+                        <td>
+                            <button type="submit" name="remove" value="{{ item.product.id }}" class="remove-btn">Remove</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="total-row">
+                        <td colspan="4" style="text-align:right;">Total:</td>
+                        <td colspan="2">${{ "%.2f"|format(cart_total) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" name="update_cart" class="checkout-btn">Update Cart</button>
+            <a href="{{ url_for('checkout_page') }}" class="checkout-btn" style="margin-left: 10px; text-decoration: none; display: inline-block; text-align: center;">Proceed to Checkout</a>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

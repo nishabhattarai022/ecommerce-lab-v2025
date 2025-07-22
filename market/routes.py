@@ -4,7 +4,7 @@ from market.models import Item, User
 from market.forms import RegisterForm, LoginForm, PurchaseItemForm, SellItemForm
 from market import db
 from flask_login import login_user, logout_user, login_required, current_user
-
+from flask import session
 @app.route('/')
 @app.route('/home')
 def home_page():
@@ -82,3 +82,22 @@ def logout_page():
     logout_user()
     flash("You have been logged out!", category='info')
     return redirect(url_for("home_page"))
+
+@app.route('/cart')
+@login_required
+def cart_page():
+    # You can customize this to show items in cart
+    return render_template('cart.html')
+
+
+
+@app.route('/add_to_cart/<int:product_id>', methods=['POST'])
+@login_required
+def add_to_cart(product_id):
+    # Get cart from session or create new
+    cart = session.get('cart', {})
+    # Add or increment quantity
+    cart[str(product_id)] = cart.get(str(product_id), 0) + 1
+    session['cart'] = cart
+    flash("Item added to cart!", "success")
+    return redirect(url_for('market_page'))

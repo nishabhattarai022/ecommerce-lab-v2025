@@ -1,30 +1,372 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Welcome to wearly
+    Welcome to Wearly
 {% endblock %}
 
 {% block content %}
-    <!-- Hero Section -->
-    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center" style="background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: #f8f9fa;">
-        <div class="col-md-8 p-lg-5 mx-auto my-5">
-            <h1 class="display-3 font-weight-bold" style="font-family: 'Playfair Display', serif;"> WEARLY</h1>
-            <p class="lead font-italic" style="font-family: 'Poppins', sans-serif;">Your style, your story – shop the latest trends in fashion.</p>
-            <a class="btn btn-light btn-lg mt-3 shadow" href="{{ url_for('market_page') }}" style="font-weight: bold; letter-spacing: 1px;">
-                Explore Collection
-            </a>
-        </div>
-        <div class="product-device box-shadow d-none d-md-block"></div>
-        <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
-    </div>
+<style>
 
-    <!-- Image Section -->
-    <div class="container my-5">
+    .wearly-about .section-title {
+        color: #6c4f4b;
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .wearly-about .section-subtitle {
+        font-style: italic;
+        color: #8b6e6b;
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+    }
+    .wearly-about img {
+        transition: transform 0.3s ease;
+        cursor: pointer;
+        width: 100%;          /* full width of the card */
+      height: 500px;        /* fixed height for all images */
+      overflow: hidden;     /* hide overflow */
+      position: relative;
+    }
+    .wearly-about img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(108, 79, 75, 0.4);
+    }
+    /* Hero Section */
+    .hero-section {
+        position: relative;
+        background: linear-gradient(to right, rgba(108, 79, 75, 0.8), rgba(108, 79, 75, 0.7)),
+                    url('/static/hero-bg.jpg') no-repeat center center/cover;
+        color: white;
+        padding: 120px 0;
+        border-radius: 12px;
+    }
+
+    .hero-content {
+        z-index: 2;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+        font-weight: bold;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        margin-bottom: 30px;
+    }
+
+    .hero-buttons .btn {
+        margin-right: 15px;
+    }
+
+    /* Categories */
+    .category-card {
+        background-color: #fff;
+        color: #333;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .category-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .category-image {
+         width: 100%;          /* full width of the card */
+      height: 400px;        /* fixed height for all images */
+      overflow: hidden;     /* hide overflow */
+      position: relative;
+    }
+
+    .category-image img {
+        width: 100%;          /* image fills width */
+      height: 100%;         /* image fills height */
+      object-fit: cover;    /* crop/scale image to cover area without distortion */
+      display: block;
+    }
+
+    .category-overlay {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .category-info {
+        padding: 15px;
+    }
+
+    /* Featured Products */
+    .product-card {
+        background: #fff;
+        color: #333;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+
+
+    .product-image {
+      width: 100%;          /* full width of the card */
+      height: 350px;        /* fixed height for all images */
+      overflow: hidden;     /* hide overflow */
+      position: relative;
+    }
+
+    .product-image img {
+      width: 100%;          /* image fills width */
+      height: 100%;         /* image fills height */
+      object-fit: cover;    /* crop/scale image to cover area without distortion */
+      display: block;
+    }
+
+
+
+    .product-overlay {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+    }
+
+    .product-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #ff4081;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    .product-badge.sale {
+        background-color: #f44336;
+    }
+
+    .product-info {
+        padding: 15px;
+    }
+
+    .product-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .product-price {
+        margin: 5px 0;
+    }
+
+    .original-price {
+        text-decoration: line-through;
+        color: #999;
+        margin-right: 10px;
+    }
+
+    .sale-price {
+        color: #f44336;
+        font-weight: bold;
+    }
+
+    .product-rating i {
+        color: #ffd700;
+    }
+
+    .rating-count {
+        margin-left: 5px;
+        font-size: 0.85rem;
+        color: #555;
+    }
+
+    /* Newsletter Section */
+    .newsletter-section {
+        background-color: #fff;
+        color: #333;
+        border-radius: 12px;
+    }
+
+    .newsletter-form input {
+        border-radius: 0;
+    }
+
+    .newsletter-form .btn {
+        border-radius: 0;
+    }
+
+    /* Section Headings */
+    .section-title {
+        font-weight: bold;
+        font-size: 2rem;
+        color: #3a2e2c;
+    }
+
+    .section-subtitle {
+        font-size: 1rem;
+        color: #5f4e4c;
+    }
+</style>
+
+<!-- About Wearly Section -->
+<section class="wearly-about py-5">
+    <div class="container text-center">
+        <h2 class="section-title">About Wearly</h2>
+        <p class="section-subtitle mb-4">"Wear your confidence, express your style."</p>
         <div class="row justify-content-center">
-            <div class="col-md-10 text-center">
+            <div class="col-md-4 mb-4">
+                <img src="{{ url_for('static', filename='wearly-style1.jpg') }}" alt="Wearly Style 1" class="img-fluid rounded shadow-sm">
+            </div>
+            <div class="col-md-4 mb-4">
+                <img src="{{ url_for('static', filename='wearly-style2.jpg') }}" alt="Wearly Style 2" class="img-fluid rounded shadow-sm">
+            </div>
+            <div class="col-md-4 mb-4">
+                <img src="{{ url_for('static', filename='wearly-style3.jpg') }}" alt="Wearly Style 3" class="img-fluid rounded shadow-sm">
+            </div>
 
-                <p class="mt-3 text-muted" style="font-family: 'Poppins', sans-serif;">Discover elegant, everyday wear and exclusive collections curated just for you.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title">Discover Your Style</h1>
+                    <p class="hero-subtitle">Trendy fashion that speaks to your unique personality. Explore our curated collection of premium clothing.</p>
+                    <div class="hero-buttons">
+                        <a href="#" class="btn btn-primary btn-lg me-3">Shop Women</a>
+                        <a href="#" class="btn btn-outline-light btn-lg">Shop Men</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</section>
+
+<!-- Categories Section -->
+<section class="categories-section py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="section-title">Shop by Category</h2>
+                <p class="section-subtitle">Find the perfect style for every occasion</p>
+            </div>
+        </div>
+        <div class="row">
+    {% set image_name = {
+        'Women': 'collection-woman-clothing.jpg',
+        'Men': 'collection-man-clothing.jpg',
+        'Unisex': 'collection-unisex-clothing.jpg'
+    } %}
+
+    {% for category in ['Women', 'Men', 'Unisex'] %}
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="category-card">
+            <div class="category-image">
+                <img src="{{ url_for('static', filename=image_name[category]) }}" alt="{{ category }}'s Fashion" class="img-fluid">
+                <div class="category-overlay">
+                    <a href="#" class="btn btn-light">Shop {{ category }}</a>
+                </div>
+            </div>
+            <div class="category-info">
+                <h4>{{ category }}'s Collection</h4>
+                <p>
+                    {% if category == 'Women' %}
+                        Elegant and trendy pieces for the modern woman
+                    {% elif category == 'Men' %}
+                        Sophisticated styles for the contemporary gentleman
+                    {% else %}
+                        Versatile pieces for everyone
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section class="featured-products py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="section-title">Featured Products</h2>
+                <p class="section-subtitle">Handpicked favorites from our latest collection</p>
+            </div>
+        </div>
+
+        <div class="row">
+    {% for product in [
+        {'title': 'Elegant Summer Dress', 'price': 'Rs.8999', 'rating': 5, 'badge': 'New', 'image': 'summer-dress.jpg'},
+        {'title': 'Classic Cotton Shirt', 'price': 'Rs.4999', 'rating': 4, 'badge': '', 'image': 'cotton-shirt.jpg'},
+        {'title': 'Vintage Denim Jacket', 'price': 'Rs.5999', 'original_price': 'Rs.7999', 'rating': 5, 'badge': 'Sale', 'image': 'denim-jacket.jpg'},
+        {'title': 'Premium Cap', 'price': 'Rs.1299', 'rating': 4, 'badge': '', 'image': 'premium-cap.jpg'}
+    ] %}
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="product-card">
+            <div class="product-image">
+                <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.title }}" class="img-fluid">
+                <div class="product-overlay">
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+                {% if product.badge %}
+                    <div class="product-badge {% if product.badge == 'Sale' %}sale{% endif %}">{{ product.badge }}</div>
+                {% endif %}
+            </div>
+            <div class="product-info">
+                <h5 class="product-title">{{ product.title }}</h5>
+                <p class="product-price">
+                    {% if product.original_price %}
+                        <span class="original-price">{{ product.original_price }}</span>
+                    {% endif %}
+                    <span class="sale-price">{{ product.price }}</span>
+                </p>
+                <div class="product-rating">
+                    {% for i in range(1, 6) %}
+                        {% if i <= product.rating %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                    <span class="rating-count">({{ 15 + loop.index * 9 }})</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter-section py-5 mt-3">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <h3 class="mb-3">Stay in Style</h3>
+                <p class="mb-4">Subscribe to our newsletter and be the first to know about new arrivals, exclusive offers, and fashion tips.</p>
+                <form class="newsletter-form">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Enter your email address" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Subscribe</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

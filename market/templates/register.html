@@ -4,37 +4,111 @@
 {% endblock %}
 
 {% block content %}
-<body class="text-center">
-    <div class="container">
-        <form method="POST" class="form-register" style="color:white">
-            {{ form.hidden_tag() }}
-            <div style="margin-bottom: 40px;"></div>
-            <h1 class="h3 mb-3 font-weight-normal">
-                Please Create your Account
-            </h1>
-            <br>
-            {{ form.username.label() }}
-            {{ form.username(class="form-control", placeholder="User Name") }}
+<style>
+  body {
+    background: transparent;
+  }
+  .form-container {
+    max-width: 450px;
+    margin: 60px auto 80px;
+    background-color: #ceadae; /* soft muted pink */
+    padding: 35px 40px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    color: black;
+  }
 
-            {{ form.email_address.label() }}
-            {{ form.email_address(class="form-control", placeholder="Email Address") }}
+  h1 {
+    font-weight: 700;
+    margin-bottom: 28px;
+    color: black;
+    text-align: center;
+  }
 
-            {{ form.password1.label() }}
-            {{ form.password1(class="form-control", placeholder="Password") }}
+  label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+    color: black;
+  }
 
-            {{ form.password2.label() }}
-            {{ form.password2(class="form-control", placeholder="Confirm Password") }}
+  .form-control {
+    background-color: white;
+    border: 1.5px solid #ceadae;
+    border-radius: 8px;
+    color: black;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    box-shadow: inset 1px 1px 5px rgba(0,0,0,0.1);
+  }
 
-            <br>
+  .form-control::placeholder {
+    color: #7d6f6d;
+  }
 
-            <div class="checkbox mb-3">
-               <h6>Already have an account?</h6>
-               <a class="btn btn-sm btn-secondary" href="{{ url_for('login_page') }}">Login</a>
-            </div>
+  .btn-primary {
+    background-color: black;
+    border: none;
+    color: #ceadae;
+    font-weight: 700;
+    padding: 14px;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+  }
+  .btn-primary:hover {
+    background-color: #333333;
+    color: white;
+  }
 
-            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+  .btn-secondary {
+    background-color: #ceadae;
+    border: 2px solid black;
+    color: black;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .btn-secondary:hover {
+    background-color: black;
+    color: #ceadae;
+  }
 
-        </form>
+  .login-prompt {
+    margin-top: 25px;
+    text-align: center;
+    color: black;
+    font-weight: 600;
+  }
+</style>
+
+<div class="form-container">
+  <form method="POST" class="form-register" novalidate>
+    {{ form.hidden_tag() }}
+
+    <h1>Please Create Your Account</h1>
+
+    {{ form.username.label() }}
+    {{ form.username(class="form-control", placeholder="User Name") }}
+
+    {{ form.email_address.label() }}
+    {{ form.email_address(class="form-control", placeholder="Email Address") }}
+
+    {{ form.password1.label() }}
+    {{ form.password1(class="form-control", placeholder="Password") }}
+
+    {{ form.password2.label() }}
+    {{ form.password2(class="form-control", placeholder="Confirm Password") }}
+
+    {{ form.submit(class="btn btn-primary mt-3") }}
+
+    <div class="login-prompt">
+      <p>Already have an account?</p>
+      <a class="btn btn-secondary" href="{{ url_for('login_page') }}">Login</a>
     </div>
-</body>
+  </form>
+</div>
 {% endblock %}

@@ -1,35 +1,106 @@
 {% extends 'base.html' %}
+
 {% block title %}
     Register Page
 {% endblock %}
 
 {% block content %}
-<body class="text-center">
-    <div class="container">
-        <form method="POST" class="form-signin" style="color:white">
-            {{ form.hidden_tag() }}
-            <div style="margin-bottom: 40px;"></div>
-            <h1 class="h3 mb-3 font-weight-normal">
-                Please Login
-            </h1>
-            <br>
-            {{ form.username.label() }}
-            {{ form.username(class="form-control", placeholder="User Name") }}
+<style>
+  body {
+    background: transparent; /* inherit from base */
+  }
+  .form-container {
+    max-width: 400px;
+    margin: 60px auto 80px;
+    background-color: rgba(108, 79, 75, 0.85); /* dark mauve translucent */
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    color: #f5f0f0;
+  }
 
-            {{ form.password.label() }}
-            {{ form.password(class="form-control", placeholder="Password") }}
+  .form-container h1 {
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: white; /* royal blue */
+  }
 
-            <br>
+  .form-control {
+    background-color: #3b2c2a;
+    border: none;
+    color: #f8f5f5;
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+    box-shadow: inset 1px 1px 5px rgba(0,0,0,0.4);
+  }
+
+  .form-control::placeholder {
+    color: #c7b7b6;
+  }
+
+  label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .btn-primary {
+    background-color: #fff; /* royal blue */
+    border: none;
+    color: black;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: black; /* slightly darker royal blue */
+    color: white;
+  }
+
+  .btn-secondary {
+    background-color: #6c4f4b;
+    border: none;
+    color: #f0e8e8;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-secondary:hover {
+    background-color: #563d3a;
+    color: #fff;
+  }
+
+  .register-prompt {
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: #e6d1d0;
+  }
+</style>
 
 
-            <div class="checkbox mb-3">
-               <h6>Do not have an account?</h6>
-               <a class="btn btn-sm btn-secondary" href="{{ url_for('register_page') }}">Register</a>
-            </div>
+<div class="form-container text-center">
+    <form method="POST" class="form-signin" novalidate>
+        {{ form.hidden_tag() }}
 
-            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+        <h1>Please Login</h1>
 
-        </form>
-    </div>
-</body>
+        {{ form.username.label() }}
+        {{ form.username(class="form-control", placeholder="User Name") }}
+
+        {{ form.password.label() }}
+        {{ form.password(class="form-control", placeholder="Password") }}
+
+        {{ form.submit(class="btn btn-primary btn-block mt-3") }}
+
+        <div class="register-prompt">
+            <p>Don't have an account?</p>
+            <a class="btn btn-secondary" href="{{ url_for('register_page') }}">Register</a>
+        </div>
+    </form>
+</div>
 {% endblock %}
